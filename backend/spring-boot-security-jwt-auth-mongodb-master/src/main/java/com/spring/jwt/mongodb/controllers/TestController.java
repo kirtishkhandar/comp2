@@ -74,6 +74,7 @@ public class TestController {
 		Set<Tweet> tweets = user.getTweets();
 		tweets.add(tweeted);
 		user.setTweets(tweets);
+		kafkaProducer.sendMessage(tweeted);
 		userRepository.save(user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -157,10 +158,10 @@ public class TestController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-    @GetMapping("/publish")
-    public ResponseEntity<String> publish(@RequestParam("message") String message){
-        kafkaProducer.sendMessage(message);
-        return ResponseEntity.ok("Message sent to kafka topic");
-    }
+//    @GetMapping("/publish")
+//    public ResponseEntity<String> publish(@RequestParam("message") String message){
+//        kafkaProducer.sendMessage(message);
+//        return ResponseEntity.ok("Message sent to kafka topic");
+//    }
 
 }

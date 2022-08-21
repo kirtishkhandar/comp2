@@ -92,4 +92,10 @@ public class Tweet implements Comparable<Tweet>{
 		return this.getDatetime().compareTo(o.datetime);
 	}
 
+	@Override
+	public String toString() {
+		return "Tweet [id=" + id + ", username=" + username + ", datetime=" + datetime + ", body=" + body + ", likedBy="
+				+ likedBy + ", replies=" + replies + "]";
+	}
+
 }
