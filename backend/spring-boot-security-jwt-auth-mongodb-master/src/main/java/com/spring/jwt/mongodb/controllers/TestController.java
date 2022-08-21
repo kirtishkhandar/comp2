@@ -1,6 +1,7 @@
 package com.spring.jwt.mongodb.controllers;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -79,8 +80,11 @@ public class TestController {
 
 	@PutMapping("/update/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> updateTweet(@RequestBody Tweet tweet, @PathVariable String id) {
-		tweet.setId(id);
+	public ResponseEntity<?> updateTweet(@RequestBody Tweet updatedTweet, @PathVariable String id) {
+		Tweet tweet = tweetRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Error: Tweet is not found."));
+		tweet.setBody(updatedTweet.getBody());
+		tweet.setDatetime(updatedTweet.getDatetime());
 		tweetRepository.save(tweet);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -127,6 +131,7 @@ public class TestController {
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<?> getTweets() {
 		List<Tweet> tweets = tweetRepository.findAll();
+		Collections.sort(tweets, Collections.reverseOrder());
 		return new ResponseEntity<List<Tweet>>(tweets, HttpStatus.OK);
 	}
 

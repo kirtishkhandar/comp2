@@ -23,6 +23,10 @@ export class LoginComponent implements OnInit {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getUser().roles;
+      setTimeout(() => {
+        window.location.href="home";
+        }
+        ,500);
     }
   }
 

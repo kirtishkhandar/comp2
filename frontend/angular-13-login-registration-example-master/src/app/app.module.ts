@@ -14,6 +14,7 @@ import { BoardModeratorComponent } from './board-moderator/board-moderator.compo
 import { BoardUserComponent } from './board-user/board-user.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
+import { SearchFilterPipe } from './_helpers/search-filter';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
     ProfileComponent,
     BoardAdminComponent,
     BoardModeratorComponent,
-    BoardUserComponent
+    BoardUserComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,18 @@ export class tweet {
     public datetime: Date,
     public body: string,
     public likedBy: string[],
-    public replies: reply[]
+    public replies: reply[],
+    public likeCount: number,
+    public likeByMe: boolean
+  ){
+  }
+}
+
+export class tweet1 {
+  constructor(
+    public username: string,
+    public datetime: Date,
+    public body: string,
   ){
   }
 }
@@ -57,6 +70,17 @@ export class reply {
     public datetime: Date,
     public tweetId: string,
     public reply: string
+  ){
+  }
+}
+
+export class user {
+  constructor(
+    public firstName: string,
+    public lastName: string,
+    public username: Date,
+    public email: string,
+    public mobile: string
   ){
   }
 }

@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tweets")
-public class Tweet {
+public class Tweet implements Comparable<Tweet>{
 
 	@Id
 	private String id;
@@ -85,6 +85,11 @@ public class Tweet {
 
 	public void setReplies(List<TweetReply> replies) {
 		this.replies = replies;
+	}
+
+	@Override
+	public int compareTo(Tweet o) {
+		return this.getDatetime().compareTo(o.datetime);
 	}
 
 }
