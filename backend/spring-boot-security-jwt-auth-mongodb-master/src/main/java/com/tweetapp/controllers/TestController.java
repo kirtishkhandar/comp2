@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tweetapp.kafka.KafkaProducer;
@@ -38,7 +37,7 @@ public class TestController {
 
 	@Autowired
 	TweetRepository tweetRepository;
-	
+
 	@Autowired
 	private KafkaProducer kafkaProducer;
 
@@ -65,9 +64,11 @@ public class TestController {
 		return "Admin Board.";
 	}
 
+	String ErrMsg = "Error: Tweet is not found.";
+
 	@PostMapping("/{username}/add")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> postTweet(@RequestBody Tweet tweet, @PathVariable String username) {
+	public ResponseEntity<Boolean> postTweet(@RequestBody Tweet tweet, @PathVariable String username) {
 		Tweet tweeted = tweetRepository.save(tweet);
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new RuntimeException("Error: User is not found."));
@@ -76,33 +77,31 @@ public class TestController {
 		user.setTweets(tweets);
 		kafkaProducer.sendMessage(tweeted);
 		userRepository.save(user);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(Boolean.TRUE);
 	}
 
 	@PutMapping("/update/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> updateTweet(@RequestBody Tweet updatedTweet, @PathVariable String id) {
-		Tweet tweet = tweetRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Error: Tweet is not found."));
+	public ResponseEntity<Boolean> updateTweet(@RequestBody Tweet updatedTweet, @PathVariable String id) {
+		Tweet tweet = tweetRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrMsg));
 		tweet.setBody(updatedTweet.getBody());
 		tweet.setDatetime(updatedTweet.getDatetime());
 		tweetRepository.save(tweet);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(Boolean.TRUE);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> deleteTweet(@PathVariable String id) {
+	public ResponseEntity<Boolean> deleteTweet(@PathVariable String id) {
 		tweetRepository.deleteById(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(Boolean.TRUE);
 	}
 
 	@PutMapping("/like/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> likeTweet(@RequestBody LoginRequest username, @PathVariable String id) {
+	public ResponseEntity<Boolean> likeTweet(@RequestBody LoginRequest username, @PathVariable String id) {
 		String username1 = username.getUsername();
-		Tweet tweet = tweetRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Error: Tweet is not found."));
+		Tweet tweet = tweetRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrMsg));
 		List<String> likedBy = tweet.getLikedBy();
 		if (likedBy == null)
 			likedBy = Arrays.asList(username1);
@@ -110,14 +109,13 @@ public class TestController {
 			likedBy.add(username1);
 		tweet.setLikedBy(likedBy);
 		tweetRepository.save(tweet);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(Boolean.TRUE);
 	}
 
 	@PostMapping("/reply/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> replyTweet(@RequestBody TweetReply reply, @PathVariable String id) {
-		Tweet tweet = tweetRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Error: Tweet is not found."));
+	public ResponseEntity<Boolean> replyTweet(@RequestBody TweetReply reply, @PathVariable String id) {
+		Tweet tweet = tweetRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrMsg));
 		List<TweetReply> replies = tweet.getReplies();
 		if (replies == null)
 			replies = Arrays.asList(reply);
@@ -125,12 +123,12 @@ public class TestController {
 			replies.add(reply);
 		tweet.setReplies(replies);
 		tweetRepository.save(tweet);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(Boolean.TRUE);
 	}
 
 	@GetMapping("/all")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> getTweets() {
+	public ResponseEntity<List<Tweet>> getTweets() {
 		List<Tweet> tweets = tweetRepository.findAll();
 		Collections.sort(tweets, Collections.reverseOrder());
 		return new ResponseEntity<List<Tweet>>(tweets, HttpStatus.OK);
@@ -138,30 +136,24 @@ public class TestController {
 
 	@GetMapping("/{username}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> getTweets(@PathVariable String username) {
+	public ResponseEntity<List<Tweet>> getTweets(@PathVariable String username) {
 		List<Tweet> tweets = tweetRepository.findByUsername(username);
 		return new ResponseEntity<List<Tweet>>(tweets, HttpStatus.OK);
 	}
 
 	@GetMapping("/users/all")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> getUsers() {
+	public ResponseEntity<List<User>> getUsers() {
 		List<User> users = userRepository.findAll();
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 
 	@GetMapping("/user/search/{username}")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public ResponseEntity<?> getUser(@PathVariable String username) {
+	public ResponseEntity<User> getUser(@PathVariable String username) {
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new RuntimeException("Error: User is not found."));
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-	
-//    @GetMapping("/publish")
-//    public ResponseEntity<String> publish(@RequestParam("message") String message){
-//        kafkaProducer.sendMessage(message);
-//        return ResponseEntity.ok("Message sent to kafka topic");
-//    }
 
 }

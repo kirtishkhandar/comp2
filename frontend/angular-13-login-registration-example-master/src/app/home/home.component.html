@@ -1,32 +1,32 @@
 <body *ngIf="isLoggedIn">
   <div style="width: 100%;" >
-      <div style="width: 20%; height: 100px; float: left;"> 
-            <button style=" width: 100%; margin-top: 20px;" type="button" class="btn btn-primary" (click)="onShowFeed()">
+    <div style="width: 19%; height: 100px; float: left;"> 
+            <button style=" width: 100%;" type="button" class="btn btn-primary" (click)="onShowFeed()">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
                 <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
               </svg>
               Show all tweets
             </button>
-      </div>
-      <div style="width: 20%; height: 100px; float: right;">
+    </div>
+    <div style="width: 19%; height: 100px; float: right; ">
         <div class="form-group">
-          <input style="margin-top: 20px;" type="text" class="form-control search-field" placeholder="Search Users" [(ngModel)]="searchUser">
+          <input type="text" class="form-control search-field" placeholder="Search Users" [(ngModel)]="searchUser">
         </div>
-        <button class="btn btn-primary" style="width: 100%;" (click)="onShowAllUser()">{{showUserButton}}</button>
+        <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" (click)="onShowAllUser()">{{showUserButton}}</button>
         <ul class="list-group" *ngIf="showUserList || searchUser">
           <li type="button" class="list-group-item" *ngFor="let user of users | searchFilter: searchUser" (click)="onSelectUser(user)">{{user.username}}</li>
         </ul>
 
     </div>
-      <div style="margin-left: 20%; margin-right: 20%; height: 100px;"> 
+    <div style="margin-left: 20%; margin-right: 20%;"> 
           
-        <div class="input-group w-100">
+        <div class="input-group w-100" style="margin-top: 10px;">
           <span class="input-group-text" id="basic-addon1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
               <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
             </svg>
           </span>
-          <textarea [(ngModel)]="toBeTweeted" type="textBox" class="form-control" placeholder="tweet whats in your mind..." aria-label="Input group example" aria-describedby="basic-addon1"></textarea>
+          <textarea [(ngModel)]="toBeTweeted" type="textBox" class="form-control" placeholder="tweet whats in your mind..." aria-label="Input group example" aria-describedby="basic-addon1" style="margin-right: 10px;"></textarea>
           <button type="button" class="btn btn-primary" (click)="onPostTweet(toBeTweeted)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
               <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
@@ -35,21 +35,21 @@
           </button>
         </div>
         <div *ngIf="showUserDetail">
-          <ul class="list-group">
+          <ul class="list-group" style="margin-top: 10px;">
             <li class="list-group-item">First Name: {{selectedUser.firstName}}</li>
             <li class="list-group-item">Last Name:  {{selectedUser.lastName}}</li>
             <li class="list-group-item">Username:  {{selectedUser.username}}</li>
             <li class="list-group-item">Email:  {{selectedUser.email}}</li>
             <li class="list-group-item">Mobile Number:  {{selectedUser.mobile}}</li>
           </ul>
-          <button class="btn btn-primary" style="width: 100%;" (click)="onShowUserTweets()">Show tweets of {{selectedUser.username}}</button>
+          <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" (click)="onShowUserTweets()">Show tweets of {{selectedUser.username}}</button>
         </div>
         <div *ngIf="showTweets">
           <div *ngIf="tweets.length == 0">No tweets to show</div>
-          <div class="p-3 p-md-4 border rounded-3 icon-demo-examples" *ngFor="let tweet of tweets | searchFilter: searchTweetsByUser">
+          <div class="card-body" *ngFor="let tweet of tweets | searchFilter: searchTweetsByUser" style="background-color: white; margin-top: 10px; border-radius: 10px;">
             <div class="card-body">
               <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="rounded-circle" height="40px" style="margin-right: 15px;"><a href="">@{{tweet.username}}</a>
-              <p class="card-text">{{tweet.body}}</p>
+              <p class="card-text" style="margin-top: 10px;">{{tweet.body}}</p>
 
               <button type="button" class="btn btn-primary" style='margin-right:10px' >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
@@ -67,21 +67,21 @@
                 Comment
               </button>
 
-              <button *ngIf="tweet.username == myself.username" type="button" class="btn btn-primary" style='margin-right:10px' (click)="onEdit(tweet.id)">
+              <button *ngIf="tweet.username == myself.username" type="button" class="btn btn-primary" style='margin-right:10px; background-color: #DECA57;' (click)="onEdit(tweet.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
                   <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
                 </svg>
                 Edit
               </button>
 
-              <button *ngIf="tweet.username == myself.username" type="button" class="btn btn-primary" style='margin-right:10px' (click)="onDelete(tweet.id)">
+              <button *ngIf="tweet.username == myself.username" type="button" class="btn btn-primary" style='margin-right:10px; background-color: #C54E57;' (click)="onDelete(tweet.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
                   <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path>
                 </svg>
                 Delete
               </button>
 
-              <p class="card-text">{{tweet.datetime}}</p>
+              <p class="card-text" style="margin-top: 10px; font-size: 12px;">{{tweet.datetime | date: 'hh:mm a, dd-MMM-yyyy'}}</p>
               <div *ngIf="showComment == tweet.id">
                 <div class="p-3 p-md-4 border rounded-3 icon-demo-examples" *ngFor="let reply of tweet.replies">
                   <div class="card-body">
@@ -109,6 +109,6 @@
             </div>
           </div>
         </div>
-      </div>
+    </div>
   </div>
 </body>
