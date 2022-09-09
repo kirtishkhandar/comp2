@@ -75,7 +75,7 @@ public class TestController {
 		Set<Tweet> tweets = user.getTweets();
 		tweets.add(tweeted);
 		user.setTweets(tweets);
-		kafkaProducer.sendMessage(tweeted);
+//		kafkaProducer.sendMessage(tweeted);
 		userRepository.save(user);
 		return ResponseEntity.ok(Boolean.TRUE);
 	}

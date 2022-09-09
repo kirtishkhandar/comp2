@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaConsumer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
-
-	@KafkaListener(topics = AppConstants.TOPIC_NAME, groupId = AppConstants.GROUP_ID)
-    public void consume(String tweet){
-        LOGGER.info(String.format("Message received -> %s", tweet));
-    }
+//    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
+//
+//	@KafkaListener(topics = AppConstants.TOPIC_NAME, groupId = AppConstants.GROUP_ID)
+//    public void consume(String tweet){
+//        LOGGER.info(String.format("Message received -> %s", tweet));
+//    }
 }

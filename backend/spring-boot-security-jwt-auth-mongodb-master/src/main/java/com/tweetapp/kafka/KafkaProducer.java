@@ -11,10 +11,10 @@ import com.tweetapp.models.Tweet;
 @Service
 public class KafkaProducer {
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    public void sendMessage(Tweet tweet){
-        kafkaTemplate.send(AppConstants.TOPIC_NAME, tweet.toString());
-    }
+//    @Autowired
+//    private KafkaTemplate<String, String> kafkaTemplate;
+//
+//    public void sendMessage(Tweet tweet){
+//        kafkaTemplate.send(AppConstants.TOPIC_NAME, tweet.toString());
+//    }
 }

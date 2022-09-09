@@ -58,9 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and().authorizeRequests()
-				.antMatchers("/api/auth/**").permitAll()
-				.antMatchers("/api/test/**").permitAll()
-				.antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+				.antMatchers("**/api/auth/**").permitAll()
+				.antMatchers("**/api/test/**").permitAll()
+				.antMatchers("**/swagger-ui/**", "**/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -68,6 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
+		web.ignoring().antMatchers("**/swagger-ui/**", "**/v3/api-docs/**", "**/api/test/**");
 	}
 }
