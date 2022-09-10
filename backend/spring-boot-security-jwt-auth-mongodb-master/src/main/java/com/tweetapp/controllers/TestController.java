@@ -1,5 +1,6 @@
 package com.tweetapp.controllers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,7 @@ public class TestController {
 		Set<Tweet> tweets = user.getTweets();
 		tweets.add(tweeted);
 		user.setTweets(tweets);
-		kafkaProducer.sendMessage(tweeted);
+		//kafkaProducer.sendMessage(tweeted);
 		userRepository.save(user);
 		return ResponseEntity.ok(Boolean.TRUE);
 	}
@@ -103,8 +104,9 @@ public class TestController {
 		String username1 = username.getUsername();
 		Tweet tweet = tweetRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrMsg));
 		List<String> likedBy = tweet.getLikedBy();
-		if (likedBy == null)
+		if (likedBy == null) {
 			likedBy = Arrays.asList(username1);
+			}
 		else
 			likedBy.add(username1);
 		tweet.setLikedBy(likedBy);
@@ -117,8 +119,9 @@ public class TestController {
 	public ResponseEntity<Boolean> replyTweet(@RequestBody TweetReply reply, @PathVariable String id) {
 		Tweet tweet = tweetRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrMsg));
 		List<TweetReply> replies = tweet.getReplies();
-		if (replies == null)
+		if (replies == null) {
 			replies = Arrays.asList(reply);
+			}
 		else
 			replies.add(reply);
 		tweet.setReplies(replies);
@@ -129,9 +132,13 @@ public class TestController {
 	@GetMapping("/all")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<List<Tweet>> getTweets() {
-		List<Tweet> tweets = tweetRepository.findAll();
-		Collections.sort(tweets, Collections.reverseOrder());
-		return new ResponseEntity<List<Tweet>>(tweets, HttpStatus.OK);
+		List<Tweet> tweets = (List<Tweet>) tweetRepository.findAll();
+		ArrayList<Tweet> sortedTweets = new ArrayList<Tweet>();
+		if(tweets != null) {
+			sortedTweets.addAll(tweets);
+			Collections.sort(sortedTweets, Collections.reverseOrder());
+		}
+		return new ResponseEntity<List<Tweet>>(sortedTweets, HttpStatus.OK);
 	}
 
 	@GetMapping("/{username}")
@@ -144,7 +151,7 @@ public class TestController {
 	@GetMapping("/users/all")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<List<User>> getUsers() {
-		List<User> users = userRepository.findAll();
+		List<User> users = (List<User>) userRepository.findAll();
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 

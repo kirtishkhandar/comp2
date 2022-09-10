@@ -2,11 +2,13 @@ package com.tweetapp.repository;
 
 import java.util.Optional;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
+import org.springframework.data.repository.CrudRepository;
 
 import com.tweetapp.models.User;
 
-public interface UserRepository extends MongoRepository<User, String> {
+@EnableScan
+public interface UserRepository extends CrudRepository<User, String> {
   Optional<User> findByUsername(String username);
 
   Boolean existsByUsername(String username);

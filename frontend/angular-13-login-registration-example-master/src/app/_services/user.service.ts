@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tweet, tweet1, user } from '../app.module';
 
-const API_URL = 'http://localhost:8080/api/test/';
+const API_URL = 'http://18.213.247.39:8080/api/test/';
 
 @Injectable({
   providedIn: 'root'
