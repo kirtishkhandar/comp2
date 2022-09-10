@@ -49,7 +49,8 @@ export class tweet {
     public likedBy: string[],
     public replies: reply[],
     public likeCount: number,
-    public likeByMe: boolean
+    public likeByMe: boolean,
+    public replycount:number
   ){
   }
 }

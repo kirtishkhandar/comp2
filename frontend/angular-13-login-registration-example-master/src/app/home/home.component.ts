@@ -57,6 +57,11 @@ export class HomeComponent implements OnInit {
             tweet.likeCount = tweet.likedBy.length;
             console.log("got count: "+tweet.likeCount);
           }
+          tweet.replycount = 0;
+          if (tweet.replies != null) {
+            tweet.replycount = tweet.replies.length;
+            console.log("got count: "+tweet.replycount);
+          }
           if ( tweet.likedBy != null && tweet.likedBy.includes(this.myself.username)) {
             console.log("adding liked by");  
             tweet.likeByMe = true;
@@ -154,10 +159,11 @@ export class HomeComponent implements OnInit {
 
   onComment(id: string){
     if (this.showComment == '') {
-      this.edit = '';
+      this.showEdit = '';
       this.showComment = id;
     } else{
       this.showComment = '';
+      this.showEdit = '';
     }
     this.ngOnInit();
   }
@@ -186,6 +192,7 @@ export class HomeComponent implements OnInit {
       this.showEdit = id;
     } else{
       this.showEdit = '';
+      this.showComment = '';
     }
     this.ngOnInit();
   }
