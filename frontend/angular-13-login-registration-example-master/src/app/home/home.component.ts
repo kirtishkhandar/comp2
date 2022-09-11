@@ -107,14 +107,16 @@ export class HomeComponent implements OnInit {
   }
 
   onPostTweet(toBeTweeted: string){
-    this.userService.postTweet(new tweet1(this.myself.username, new Date(), toBeTweeted)).subscribe({
-      next: data => {
-        this.tweetPostSuccess = data;
-      },
-      error: err => {
-        this.tweetPostSuccess = JSON.parse(err.error).message;
-      }
-    });
+    if (toBeTweeted != ''){
+      this.userService.postTweet(new tweet1(this.myself.username, new Date(), toBeTweeted)).subscribe({
+        next: data => {
+          this.tweetPostSuccess = data;
+        },
+        error: err => {
+          this.tweetPostSuccess = JSON.parse(err.error).message;
+        }
+      });
+    }
     this.toBeTweeted = '';
     setTimeout(() => {
       this.ngOnInit();
